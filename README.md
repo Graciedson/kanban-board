@@ -1,2 +1,2 @@
 # kanban-board
-Site Kanban Crido CLAUDE AI
+Site Kanban Criado com CLAUDE AI
