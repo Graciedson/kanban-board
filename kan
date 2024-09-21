@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quadro Kanban</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+        }
+        .kanban-board {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .column {
+            flex: 1;
+            background-color: #e2e2e2;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 0 10px;
+        }
+        .column h2 {
+            text-align: center;
+            color: #333;
+        }
+        .task {
+            background-color: white;
+            border-radius: 3px;
+            padding: 10px;
+            margin-bottom: 10px;
+            cursor: move;
+        }
+        #new-task {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Meu Quadro Kanban</h1>
+    <input type="text" id="new-task" placeholder="Nova tarefa">
+    <button onclick="addTask()">Adicionar Tarefa</button>
+    <div class="kanban-board">
+        <div class="column" id="todo">
+            <h2>A Fazer</h2>
+        </div>
+        <div class="column" id="doing">
+            <h2>Em Andamento</h2>
+        </div>
+        <div class="column" id="done">
+            <h2>Concluído</h2>
+        </div>
+    </div>
+
+    <script>
+        function addTask() {
+            const taskText = document.getElementById('new-task').value;
+            if (taskText) {
+                const task = document.createElement('div');
+                task.className = 'task';
+                task.draggable = true;
+                task.textContent = taskText;
+                task.addEventListener('dragstart', drag);
+                document.getElementById('todo').appendChild(task);
+                document.getElementById('new-task').value = '';
+            }
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            ev.target.appendChild(document.getElementById(data));
+        }
+
+        document.querySelectorAll('.column').forEach(column => {
+            column.addEventListener('dragover', allowDrop);
+            column.addEventListener('drop', drop);
+        });
+    </script>
+</body>
+</html>
